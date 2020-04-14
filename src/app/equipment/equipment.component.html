@@ -1,7 +1,20 @@
 <h3>Equipment</h3>
 <ul>
-  <li>Habitat dome</li>
-  <li>Drones</li>
-  <li>Food containers</li>
-  <li>Oxygen tanks</li>
+  <li *ngFor="let item of items">
+    <span *ngIf="itemBeingEdited !== item; else elseBlock">
+      <!-- show state of member -->
+      <span (click)="edit(item)" class="editable-text">{{item.name}}</span>
+      <button (click)="remove(item)" title="remove">&times;</button>
+      <!-- TODO: Confirm if you want to remove a item first -->
+      <!-- TODO: Quantity of items -->  
+    </span>
+    <ng-template #elseBlock>
+      <!-- edit state of member -->
+      <input #updatedName (keyup.enter)="message=save(updatedName.value,item)" value="{{item.name}}"/>
+      <button (click)="message=save(updatedName.value,item)">Save</button>
+    </ng-template>
+  </li>
 </ul>
+<input #name (keyup.enter)="message=add(name.value,item);name.value=''" type="text"/>
+<button (click)="message=add(name.value,item);name.value=''">Add</button>
+<p class="error" *ngIf="message">{{message}}</p>

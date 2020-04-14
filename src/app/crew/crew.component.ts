@@ -26,11 +26,37 @@ export class CrewComponent implements OnInit {
   ngOnInit() {
   }
 
+  // How about a function to search the names
+  inNames(name : string){
+    //console.log(this.crew);
+    //console.log(this.crew.map(function(x){return x["name"]}));
+    // I really wanted to use a map here. Will have to explore that later
+    //let names: string[] = this.crew.map(member => member["name"]);
+    //return names.includes(name);
+
+   for(let i = 0; i < this.crew.length; i++){
+     if(this.crew[i]["name"] === name){
+       return true;
+     }
+   }
+   return false;
+  }
+
   add(memberName: string, isFirst: boolean){
-    this.crew.push({
-      name: memberName,
-      firstMission: isFirst
-    });
+    let errorMsg = "";
+    if(memberName === ""){
+      errorMsg = "Please enter a name.";
+    }
+    else if(this.inNames(memberName)){
+      errorMsg = `${memberName} is already part of the crew.`;
+    }
+    else {
+      this.crew.push({
+        name: memberName,
+        firstMission: isFirst
+      });
+    }
+    return errorMsg;
   }
 
   remove(member: object){
@@ -39,12 +65,36 @@ export class CrewComponent implements OnInit {
   }
 
   edit(member: object){
-    this.memberBeingEdited = member;
+    /*
+    let errorMsg = "";
+    //let memberName : string = member["name"];
+    // Turns out, can't use dot, have to use brace notation.
+    if(member["name"] === ""){
+      errorMsg = "Please enter a name.";
+      // TODO: What if blanking this could be another way to remove()?
+    }
+    else if(!this.inNames(member["name"])){
+      this.memberBeingEdited = member;
+    }  
+    //else{}  // do nothing
+    return errorMsg;
+    */
+   this.memberBeingEdited = member;
   }
 
   save(name: string, member: object){
-    member["name"] = name;
-    this.memberBeingEdited = null;
+    let errorMsg = "";
+    if(name === ""){
+      errorMsg = "Please enter a name.";
+    }
+    else if(this.inNames(name)){
+      errorMsg = `${name} is already part of the crew.`;
+    }
+    else {
+      member["name"] = name;
+      this.memberBeingEdited = null;
+    }
+    return errorMsg;
   }
 
 }

@@ -5,16 +5,19 @@
       <!-- show state of member -->
       <span (click)="edit(member)" class="editable-text">{{member.name}}</span>
       <span *ngIf="member.firstMission"> - 1st</span>
-      <button (click)="remove(member)" title="remove">&times;</button><!-- this looks better -->  
+      <button (click)="remove(member)" title="remove">&times;</button><!-- this looks better -->
+      <!-- TODO: Confirm if you want to remove a member first -->
+      <!-- TODO: Make firstMission editable -->  
     </span>
     <ng-template #elseBlock>
       <!-- edit state of member -->
-      <input #updatedName (keyup.enter)="save(updatedName.value,member)" value="{{member.name}}"/>
-      <button (click)="save(updatedName.value,member)">Save</button>
+      <input #updatedName (keyup.enter)="message=save(updatedName.value,member)" value="{{member.name}}"/>
+      <button (click)="message=save(updatedName.value,member)">Save</button>
     </ng-template>
   </li>
 </ul>
-<input #name type="text"/>
+<input #name type="text"/><!-- NOTE: we don't want to keyup.enter here, because checkbox -->
 <!-- TODO: See if we can apply a checkbox from Codepen here -->
 <label>firstMission <input #firstMission type="checkbox"/></label>
-<button (click)="add(name.value,firstMission.checked)">Add</button>
+<button (click)="message=add(name.value,firstMission.checked);name.value=''">Add</button>
+<p class="error" *ngIf="message">{{message}}</p>
